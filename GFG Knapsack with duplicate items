@@ -1,0 +1,32 @@
+class Solution {
+  public:
+    // int solve(vector<int>& val,vector<int>& wt,int capacity,int i,vector<vector<int>>& dp){
+    //     if(i==val.size()){
+    //         return 0;
+    //     }
+    //     if(dp[i][capacity]!=-1){
+    //         return dp[i][capacity];
+    //     }
+    //     int notake=solve(val,wt,capacity,i+1,dp);
+    //     int take=0;
+    //     if(capacity-wt[i]>=0){
+    //         take=val[i]+solve(val,wt,capacity-wt[i],i,dp);
+    //     }
+    //     return dp[i][capacity]=max(take,notake);
+    // }
+    int knapSack(vector<int>& val, vector<int>& wt, int capacity) {
+        int n=val.size();
+        vector<vector<int>>dp(n+1,vector<int>(capacity+1,0));
+        for(int i=n-1;i>=0;i--){
+            for(int j=0;j<=capacity;j++){
+                int notake=dp[i+1][j];
+                int take=0;
+                if(j-wt[i]>=0){
+                    take=val[i]+dp[i][j-wt[i]];
+                }
+                dp[i][j]=max(take,notake);
+            }
+        }
+                return dp[0][capacity];
+    }
+};
