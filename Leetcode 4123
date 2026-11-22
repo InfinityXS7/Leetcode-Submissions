@@ -1,0 +1,32 @@
+class Solution {
+public:
+    long long minCost(vector<int>& nums) {
+        int n = nums.size();
+        long long sum = 0;
+        int negativeCount = 0;
+        long long closestNegative = LLONG_MIN;
+        long long smallestNonNegative = LLONG_MAX;
+        for(int i = 1; i < n - 1; i++) {
+            if(nums[i] < 0) {
+                sum += nums[i];
+                negativeCount++;
+                closestNegative = max(closestNegative, (long long)nums[i]);
+            }
+            else {
+                smallestNonNegative = min(smallestNonNegative, (long long)nums[i]);
+            }
+        }
+        if(negativeCount % 2 == 1) {
+            long long removeNegative = LLONG_MAX;
+            long long addNonNegative = LLONG_MAX;
+            if(closestNegative != LLONG_MIN) {
+                removeNegative = -closestNegative;
+            }
+            if(smallestNonNegative != LLONG_MAX) {
+                addNonNegative = smallestNonNegative;
+            }
+            sum += min(removeNegative, addNonNegative);
+        }
+        return sum + nums[0] + nums[n - 1];
+    }
+};
