@@ -1,0 +1,20 @@
+class Solution {
+public:
+    bool checkString(string s) {
+        int lasta=-1;
+        int firstb=-1;
+        for(int i=0;i<s.size();i++){
+            char c=s[i];
+            if(c=='a'){
+                lasta=i;
+            }
+            if(c=='b'&&firstb==-1){
+                firstb=i;
+            }
+            if(lasta!=-1&&firstb!=-1&&lasta-firstb>0){
+                return false;
+            }
+        }
+        return true;
+    }
+};
