@@ -1,0 +1,66 @@
+// class Solution {
+// public:
+//     vector<long long> earliestActivationTimes(int n, vector<vector<int>>& edges, vector<int>& requiredSignals) {
+//         vector<vector<pair<int,int>>> adj(n);
+//         for(auto &e : edges) {
+//             adj[e[0]].push_back({e[1], e[2]});
+//         }
+//         vector<long long> ans(n, -1);
+//         vector<int> count(n, 0);
+//         vector<long long> maxTime(n, 0);
+//         priority_queue<pair<long long,int>,
+//                        vector<pair<long long,int>>,
+//                        greater<pair<long long,int>>> pq;
+//         ans[0] = 0;
+//         pq.push({0, 0});
+//         while(!pq.empty()) {
+//             auto [time, u] = pq.top();
+//             pq.pop();
+//             for(auto &[v, delay] : adj[u]) {
+//                 long long arrival = time + delay;
+//                 count[v]++;
+//                 maxTime[v] = max(maxTime[v], arrival);
+//                 if(count[v] == requiredSignals[v]) {
+//                     ans[v] = maxTime[v];
+//                     pq.push({ans[v], v});
+//                 }
+//             }
+//         }
+//         return ans;
+//     }
+// };
+
+
+
+
+
+class Solution {
+public:
+    vector<long long> earliestActivationTimes(int n, vector<vector<int>>& edges, vector<int>& requiredSignals) {
+        vector<vector<pair<int,int>>> adj(n);
+        for(auto &e : edges) {
+            adj[e[0]].push_back({e[1], e[2]});
+        }
+        vector<long long> ans(n, -1);
+        vector<int> count(n, 0);
+        using T = tuple<long long, int, int>;
+        priority_queue<T, vector<T>, greater<T>> pq;
+        ans[0] = 0;
+        for(auto &[v, d] : adj[0]) {
+            pq.push({d, 0, v});
+        }
+        while(!pq.empty()) {
+            auto [time, u, v] = pq.top();
+            pq.pop();
+            if(ans[v] != -1) continue;
+            count[v]++;
+            if(count[v] == requiredSignals[v]) {
+                ans[v] = time;
+                for(auto &[next, delay] : adj[v]) {
+                    pq.push({time + delay, v, next});
+                }
+            }
+        }
+        return ans;
+    }
+};
