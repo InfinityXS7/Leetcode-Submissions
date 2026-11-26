@@ -1,0 +1,69 @@
+class Solution {
+public:
+    int st=0;
+    int len=1;
+    // bool isPalindrome(const string& temp) {
+    //     int left = 0, right = temp.size() - 1;
+    //     while (left < right) {
+    //         if (temp[left++] != temp[right--]) return false;
+    //     }
+    //     return true;
+    // }
+    // bool solve(string& s, int i, int j, int n, vector<vector<int>>& dp) {
+    //     if(i>j) return true;
+    //     if(i==j) return true;
+    //     // temp += s[j];
+    //     // if (temp.size() > ans.size() && isPalindrome(temp)) {
+    //     //     ans = temp;
+    //     // }
+    //     // solve(s, i, j + 1, n, temp);
+    //     // if (i == j) {
+    //     //     solve(s, i + 1, i + 1, n, "");
+    //     // }
+    //     if(dp[i][j]!=-1){
+    //         return dp[i][j];
+    //     }
+    //     if(s[i]==s[j]){
+    //         dp[i][j]=solve(s,i+1,j-1,n,dp);
+    //     }
+    //     else{
+    //         dp[i][j]=0;
+    //     }
+    //     solve(s,i,j-1,n,dp);
+    //     solve(s,i+1,j,n,dp);
+    //     if(dp[i][j]==1&&j-i+1>len){
+    //         len=j-i+1;
+    //         st=i;
+    //     }
+    //     return dp[i][j];
+    // }
+    string longestPalindrome(string s) {
+        int n=s.size();
+        if(n==0){
+            return "";
+        }
+        st=0;
+        len=1;
+        vector<vector<int>>dp(n,vector<int>(n,-1));
+        for(int i=0;i<n;i++){
+            for(int j=i;j>=0;j--){
+                dp[i][j]=1;
+            }
+        }
+        for(int i=n-1;i>=0;i--){
+            for(int j=i+1;j<n;j++){
+                if(s[i]==s[j]){
+                    if(j-i==1||dp[i+1][j-1]==1){
+                        dp[i][j]=1;
+                    }
+                }
+                if(dp[i][j]==1&&j-i+1>len){
+                    len=j-i+1;
+                    st=i;
+                }
+            }
+        }
+        // solve(s,0,n-1,n,dp);
+        return s.substr(st,len);
+    }
+};
