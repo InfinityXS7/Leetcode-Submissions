@@ -1,0 +1,15 @@
+class Solution {
+public:
+    bool solve(int n,int i,int k){
+        if(n<k){
+            return i;
+        }
+        return solve(n-k,1-i,k-1);
+    }
+    bool canAliceWin(int n) {
+        if(solve(n,0,10)==0){
+            return false;
+        }
+        return true;
+    }
+};
